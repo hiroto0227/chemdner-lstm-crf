@@ -1,4 +1,5 @@
 storage_root = '../crf-chemdner/storage/'
+storage_root = '/Users/user/chemdner/storage/'
 
 # for datasets
 datasets_root = storage_root + 'datas/'
