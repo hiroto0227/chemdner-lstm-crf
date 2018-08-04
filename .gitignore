@@ -1,6 +1,8 @@
 .idea/
+.vscode
 .python-version
 __pycache__/
 outsource/
 datas/
 chemdner_datas/*.csv
+.ipynb_checkpoints/
