@@ -3,3 +3,4 @@
 __pycache__/
 outsource/
 datas/
+chemdner_datas/*.csv
