@@ -17,7 +17,7 @@ if __name__ == '__main__':
     EPOCH = 100
     BATCH_SIZE = 32
     # prepare data
-    train_df = pd.read_csv(os.path.join(CHEM_DATA_PATH, 'train.csv'))[:3000]
+    train_df = pd.read_csv(os.path.join(CHEM_DATA_PATH, 'train.csv'))[:10000]
     token2ix = dataset.load_token_to_id()
     label2ix = dataset.load_label_to_id()
     # transform
@@ -34,7 +34,7 @@ if __name__ == '__main__':
             for x, y in zip(X, Y):
                 model.zero_grad()
                 tag_scores = model(x)
-                loss = loss_function(tag_scores, y)
+                loss = loss_function(tag_scores, y) 
                 loss.backward()
                 optimizer.step()
                 loss_sum += float(loss)

@@ -23,7 +23,7 @@ class MyLSTM(nn.Module):
         self.hidden = self.init_hidden()
         embeds = self.embed(x)
         lstm_out, self.hidden = self.lstm(
-            embeds.view(1, self.batch_size, self.embed_dim), self.hidden)
+            embeds.view(-1, self.batch_size, self.embed_dim), self.hidden)
         tag_space = self.hidden2tag(lstm_out)
         tag_scores = F.log_softmax(tag_space, dim=1)
         return tag_scores[0]
