@@ -33,8 +33,9 @@ if __name__ == '__main__':
             loss_sum = 0
             for x, y in zip(X, Y):
                 model.zero_grad()
-                tag_scores = model(x)
-                loss = loss_function(tag_scores, y) 
+                tag_scores = model(x, y)
+                print(y.size(), tag_scores.size())
+                loss = loss_function(tag_scores, y)
                 loss.backward()
                 optimizer.step()
                 loss_sum += float(loss)

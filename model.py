@@ -1,6 +1,9 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from torchcrf import CRF
+from torch.autograd import Variable as Var
+
 
 
 class MyLSTM(nn.Module):
@@ -14,16 +17,25 @@ class MyLSTM(nn.Module):
         self.hidden = self.init_hidden()
         self.hidden2tag = nn.Linear(HIDDEN_DIM, tag_size)
         self.tag_size = tag_size
+        self.crf = CRF(tag_size)
 
     def init_hidden(self):
         return (torch.zeros(1, self.batch_size, self.hidden_dim),
                 torch.zeros(1, self.batch_size, self.hidden_dim))
 
-    def forward(self, x):
+    def forward(self, x, tag):
         self.hidden = self.init_hidden()
         embeds = self.embed(x)
+        print('embed_size: {}'.format(embeds.size()))
         lstm_out, self.hidden = self.lstm(
             embeds.view(-1, self.batch_size, self.embed_dim), self.hidden)
+        print('lstm_out_size: {}'.format(lstm_out.size()))
         tag_space = self.hidden2tag(lstm_out)
-        tag_scores = F.log_softmax(tag_space, dim=1)
-        return tag_scores[0]
+        print('tag_space: {}'.format(tag_space.size()))
+        emissions = F.log_softmax(tag_space, dim=1)
+        print('emissions: {}'.format(emissions.size()))
+        return emissions
+        #print('tag: {}'.format(tag.size()))
+        #tag_scores = self.crf(emissions, tag)
+        #print('tag_scores: {}'.format(tag_scores.size()))
+        #return Var(torch.max(emissions, 2)[1])
